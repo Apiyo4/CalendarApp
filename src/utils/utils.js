@@ -1,0 +1,37 @@
+export const zodiacSignsArr = [
+  { name: 'Aries', start: 'March 21', end: 'April 19' },
+  { name: 'Taurus', start: 'April 20', end: 'May 20' },
+  { name: 'Gemini', start: 'May 21', end: 'June 20' },
+  { name: 'Cancer', start: 'June 21', end: 'July 22' },
+  { name: 'Leo', start: 'July 23', end: 'August 22' },
+  { name: 'Virgo', start: 'August 23', end: 'September 22' },
+  { name: 'Libra', start: 'September 23 ', end: 'October 22' },
+  { name: 'Scorpio', start: 'October 23', end: 'November 21' },
+  { name: 'Sagittarius', start: 'November 22', end: 'December 21' },
+  { name: 'Capricorn', start: 'December 22', end: 'January 19' },
+  { name: 'Aquarius', start: 'January 20', end: 'February 19' },
+  { name: 'Pisces', start: 'February 19 ', end: 'March 20' },
+];
+export const monthsArr = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+export const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];

@@ -20,8 +20,10 @@ import {
   differenceInBusinessDays,
   differenceInCalendarWeeks,
   getDate,
+  getDay,
   isThursday,
 } from 'date-fns';
+import { days, zodiacSignsArr, monthsArr } from './utils/utils';
 
 function App() {
   const [showCalendarInput, setShowCalendarInput] = useState(false);
@@ -33,7 +35,9 @@ function App() {
   const [nextDay, setNextDay] = useState(null);
   const [prevDay, setPrevDay] = useState(null);
   const [xmasDay, setXmasDay] = useState(null);
-
+  const [weekDay, setWeekDay] = useState('');
+  const [zodiacSign, setZodiacSign] = useState('');
+  console.log(days, monthsArr, zodiacSignsArr);
   const checkDate = date => {
     if (new Date(date) !== 'Invalid Date' && !isNaN(new Date(date))) {
       if (isDate(new Date(date))) {
@@ -55,6 +59,8 @@ function App() {
           })
         );
         setXmasDay(getShoppingDays(inputedDate));
+        setWeekDay(days[getDay(new Date(inputedDate))]);
+        getZodiacSign(inputedDate);
       }
     } else {
       setShowError(true);
@@ -118,6 +124,21 @@ function App() {
       return thanksgiving;
     }
   };
+  const getZodiacSign = date1 => {
+    const monthInd = getMonth(new Date(date1));
+    const month = monthsArr[monthInd];
+    const day1 = getDate(new Date(date1));
+    for (let i = 0; i < zodiacSignsArr.length; i++) {
+      if (
+        (zodiacSignsArr[i].start.split(' ')[0] === month &&
+          zodiacSignsArr[i].start.split(' ')[1] <= day1) ||
+        (zodiacSignsArr[i].end.split(' ')[0] === month &&
+          zodiacSignsArr[i].end.split(' ')[1] >= day1)
+      ) {
+        setZodiacSign(zodiacSignsArr[i].name);
+      }
+    }
+  };
   return (
     <ChakraProvider theme={theme}>
       <Box textAlign="center" fontSize="xl" m="0 auto">
@@ -156,7 +177,6 @@ function App() {
         <Flex width="18%" margin="0 auto" flexDirection="column">
           {showCalendarInput && (
             <Input
-              id='date'
               value={inputedDate}
               type="date"
               mb="2rem"
@@ -165,7 +185,6 @@ function App() {
           )}
           {showTextInput && (
             <Input
-              id='text'
               value={inputedDate}
               type="text"
               placeholder="Enter Date..."
@@ -201,8 +220,10 @@ function App() {
               Previous Date: {format(new Date(prevDay), 'yyyy-MM-dd')}
             </Text>
             <Text> Days to christmas: {xmasDay}</Text>
+            <Text> Day: {weekDay}</Text>
+            <Text> Zodiac Sign: {zodiacSign}</Text>
           </Box>
-      )} 
+        )}
       </Box>
     </ChakraProvider>
   );
