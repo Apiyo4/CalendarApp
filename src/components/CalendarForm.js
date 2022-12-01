@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { Input, Flex, Button, Text } from '@chakra-ui/react';
 export default function CalendarForm({
   showCalendarInput,
@@ -18,6 +18,7 @@ export default function CalendarForm({
             type="date"
             mb="2rem"
             onChange={handleChange}
+            height='60px'
           />
         )}
         {showTextInput && (
@@ -27,6 +28,7 @@ export default function CalendarForm({
             placeholder="Enter Date..."
             mb="2rem"
             onChange={handleChange}
+            height='60px'
           />
         )}
       </Flex>

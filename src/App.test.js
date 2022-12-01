@@ -8,3 +8,9 @@ test('renders learn react link', () => {
   const linkElement = screen.getByText(/learn chakra/i);
   expect(linkElement).toBeInTheDocument();
 });
+// describe('Funtion name', ()=>{
+//   it('seems to work', ()=>{
+//     expect(5).toBeDefined()
+//     expect(5).toBe(5)
+//   })
+// })
