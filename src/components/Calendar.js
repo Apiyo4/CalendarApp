@@ -1,25 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Input,
-  Heading,
-  Flex,
-  Button,
-  Text,
-  Table,
-  TableContainer,
-  Thead,
-  Th,
-  Td,
-  Tr,
-  Tbody,
-  Divider,
-} from '@chakra-ui/react';
+import { Box, Heading, Flex, Button, Divider } from '@chakra-ui/react';
 import {
   isDate,
   add,
   sub,
-  format,
   differenceInDays,
   getYear,
   getMonth,
@@ -30,8 +14,12 @@ import {
   isThursday,
 } from 'date-fns';
 import { days, zodiacSignsArr, monthsArr } from '../utils/utils';
+import CalendarDisplay from './CalendarDisplay';
+import CalendarForm from './CalendarForm';
+import CalendarHeader from './CalendarHeader';
 
 export default function Calendar() {
+
   const [showCalendarInput, setShowCalendarInput] = useState(false);
   const [showTextInput, setShowTextInput] = useState(true);
   const [inputedDate, setInputedDate] = useState('');
@@ -43,6 +31,7 @@ export default function Calendar() {
   const [xmasDay, setXmasDay] = useState(null);
   const [weekDay, setWeekDay] = useState('');
   const [zodiacSign, setZodiacSign] = useState('');
+
   const checkDate = date => {
     if (new Date(date) !== 'Invalid Date' && !isNaN(new Date(date))) {
       if (isDate(new Date(date))) {
@@ -76,11 +65,13 @@ export default function Calendar() {
       }
     }
   };
+
   const handleChange = event => {
     setInputedDate(event.target.value);
     setShowError(false);
     setShowInputedDate(false);
   };
+
   const getShoppingDays = date1 => {
     const day1 = new Date(date1);
     const thanksgiving = getThanksgivingDay(date1);
@@ -107,10 +98,12 @@ export default function Calendar() {
     const saturdays = numberOfSaturdays;
     const totalShoppingDays = saturdays + businessDays;
     const removeThanksgiving = differenceInDays(new Date(date1), thanksgiving);
-    return removeThanksgiving < 0
-      ? totalShoppingDays - 2
-      : totalShoppingDays - 1;
+    return Math.max(
+      removeThanksgiving < 0 ? totalShoppingDays - 3 : totalShoppingDays - 2,
+      0
+    );
   };
+
   const getThanksgivingDay = date1 => {
     if (date1) {
       const currentYear = getYear(new Date(date1));
@@ -129,6 +122,7 @@ export default function Calendar() {
       return thanksgiving;
     }
   };
+
   const getZodiacSign = date1 => {
     const monthInd = getMonth(new Date(date1));
     const month = monthsArr[monthInd];
@@ -144,131 +138,34 @@ export default function Calendar() {
       }
     }
   };
+  
   return (
     <Box textAlign="center" fontSize="xl" m="0 auto">
-      <Heading my="3rem">Calendar App</Heading>
-      <Flex
-        maxWidth={'600px'}
-        margin="30px auto"
-        justifyContent={'space-between'}
-      >
-        <Button
-          height="60px"
-          textTransform={'uppercase'}
-          width="240px"
-          mb="2rem"
-          mr={'2rem'}
-          px={'1.5rem'}
-          background="blue"
-          _hover={{ background: 'blue.700' }}
-          _active={{ background: 'blue.700' }}
-          onClick={() => {
-            setShowTextInput(false);
-            setShowCalendarInput(true);
-          }}
-          color="white"
-        >
-          Select date
-        </Button>
-        <Button
-          height="60px"
-          width="240px"
-          textTransform={'uppercase'}
-          mb="2rem"
-          px={'1.5rem'}
-          background="green"
-          onClick={() => {
-            setShowCalendarInput(false);
-            setShowTextInput(true);
-          }}
-          color="white"
-          _hover={{ background: 'green.700' }}
-          _active={{ background: 'green.700' }}
-        >
-          Enter date
-        </Button>
-      </Flex>
-      <Flex width="32%" margin="0 auto" flexDirection="column">
-        {showCalendarInput && (
-          <Input
-            value={inputedDate}
-            type="date"
-            mb="2rem"
-            onChange={handleChange}
-          />
-        )}
-        {showTextInput && (
-          <Input
-            value={inputedDate}
-            type="text"
-            placeholder="Enter Date..."
-            mb="2rem"
-            onChange={handleChange}
-          />
-        )}
-      </Flex>
-      {showError && (
-        <Text mb="1rem" color="red" textAlign={'center'}>
-          {errorMessageI}
-        </Text>
-      )}
-      <Button
-        height="60px"
-        textTransform={'uppercase'}
-        onClick={() => checkDate(inputedDate)}
-        mb="2rem"
-        mr={'2rem'}
-        px={'1.5rem'}
-        background="#fff"
-        border="2px solid blue"
-        width="240px"
-        mt={'1rem'}
-      >
-        Is Date??
-      </Button>
+      <CalendarHeader
+        setShowCalendarInput={setShowCalendarInput}
+        setShowTextInput={setShowTextInput}
+      />
+      <CalendarForm
+        showCalendarInput={showCalendarInput}
+        inputedDate={inputedDate}
+        handleChange={handleChange}
+        showTextInput={showTextInput}
+        showError={showError}
+        errorMessageI={errorMessageI}
+        checkDate={checkDate}
+      />
 
       {showInputedDate && (
-       <>
-       {/* <Flex  my='0 auto' justify={'center'} > */}
-       <Divider maxWidth={'600px'} m = '3rem auto' color={'grey'}/>
-       {/* </Flex> */}
-       
-        <TableContainer maxWidth="600px" margin="0 auto">
-          <Table variant="striped" colorScheme="teal">
-            <Thead>
-              <Tr>
-                <Th>Name</Th>
-                <Th>Value</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>Inputed Date</Td>
-                <Td>{format(new Date(inputedDate), 'yyyy-MM-dd')}</Td>
-              </Tr>
-              <Tr>
-                <Td>Next Date</Td>
-                <Td>{format(new Date(nextDay), 'yyyy-MM-dd')}</Td>
-              </Tr>
-              <Tr>
-                <Td>Previous Date</Td>
-                <Td> {format(new Date(prevDay), 'yyyy-MM-dd')}</Td>
-              </Tr>
-              <Tr>
-                <Td>Shopping Days</Td>
-                <Td> {xmasDay}</Td>
-              </Tr>
-              <Tr>
-                <Td>Day</Td>
-                <Td> {weekDay}</Td>
-              </Tr>
-              <Tr>
-                <Td>Zodiac Sign</Td>
-                <Td> {zodiacSign}</Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
+        <>
+          <Divider maxWidth={'600px'} m="3rem auto" color={'grey'} />
+          <CalendarDisplay
+            inputedDate={inputedDate}
+            nextDay={nextDay}
+            prevDay={prevDay}
+            xmasDay={xmasDay}
+            weekDay={weekDay}
+            zodiacSign={zodiacSign}
+          />
         </>
       )}
     </Box>
