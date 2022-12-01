@@ -182,6 +182,8 @@ export default function Calendar() {
             setShowTextInput(true);
           }}
           color="white"
+          _hover={{ background: 'green.700' }}
+          _active={{ background: 'green.700' }}
         >
           Enter date
         </Button>
